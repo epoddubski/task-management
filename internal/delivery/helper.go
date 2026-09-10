@@ -8,6 +8,8 @@ import (
 	"log/slog"
 	"net/http"
 	"strconv"
+
+	"task-management/internal/domain"
 )
 
 func parseIDParam(r *http.Request) (int64, error) {
@@ -52,8 +54,23 @@ func writeError(w http.ResponseWriter, err error) {
 
 func mapErrorToStatus(err error) int {
 	switch {
-	case errors.Is(err, ErrUnauthorized):
+	case errors.Is(err, domain.ErrTaskNotFound),
+		errors.Is(err, domain.ErrUserNotFound):
+		return http.StatusNotFound
+
+	case errors.Is(err, domain.ErrForbidden):
+		return http.StatusForbidden
+
+	case errors.Is(err, domain.ErrInvalidCreds),
+		errors.Is(err, domain.ErrInvalidToken),
+		errors.Is(err, ErrUnauthorized):
 		return http.StatusUnauthorized
+
+	case errors.Is(err, domain.ErrUserExists):
+		return http.StatusConflict
+
+	case errors.Is(err, domain.ErrValidation):
+		return http.StatusUnprocessableEntity
 
 	case errors.Is(err, ErrRequestBody),
 		errors.Is(err, ErrQueryParameter),

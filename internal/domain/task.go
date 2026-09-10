@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"errors"
 	"time"
 )
 
@@ -11,6 +12,13 @@ const (
 	StatusInProgress TaskStatus = "in_progress"
 	StatusCompleted  TaskStatus = "completed"
 	StatusOverdue    TaskStatus = "overdue"
+)
+
+var (
+	ErrTaskNotFound = errors.New("task not found")
+	ErrForbidden    = errors.New("only the creator can modify or delete this task")
+
+	ErrValidation = errors.New("validation failed")
 )
 
 func (s TaskStatus) Valid() bool {
