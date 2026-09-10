@@ -125,7 +125,7 @@ func TestAuthServiceLogin(t *testing.T) {
 			name:     "unknown email",
 			email:    "ghost@example.com",
 			password: "password123",
-			wantErr:  domain.ErrUserNotFound,
+			wantErr:  domain.ErrInvalidCreds,
 		},
 		{
 			name:     "wrong password",

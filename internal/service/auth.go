@@ -65,7 +65,7 @@ func (u *AuthService) Register(ctx context.Context, email, password string) (*do
 func (u *AuthService) Login(ctx context.Context, email, password string) (string, error) {
 	user, err := u.users.GetByEmail(ctx, email)
 	if err != nil {
-		return "", err
+		return "", domain.ErrInvalidCreds // err
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)); err != nil {
