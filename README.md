@@ -1,13 +1,13 @@
 # Task Management
 
-REST API for managing tasks with user authentication.
+REST API for managing tasks with user authentication
 
 ## Rules
 
 ### Task Lifecycle & Assignment
-- **Task Statuses**: Every task strictly operates within one of four valid states: `created`, `in_progress`, `completed`, or `overdue`.
-- **Default Assignee**: When a new task is created without specifying an assignee (`assignee_id`), the system automatically binds the task to its **creator**.
-- **Overdue Guard (NEW)**: If a task is created or updated with a deadline that is already in the past, the system automatically forces its status to `overdue`.
+- **Task Statuses**: Every task strictly operates within one of four valid states: `created`, `in_progress`, `completed`, or `overdue`
+- **Default Assignee**: When a new task is created without specifying an assignee (`assignee_id`), the system automatically binds the task to its **creator**
+- **Overdue Guard (NEW)**: If a task is created or updated with a deadline that is already in the past, the system automatically forces its status to `overdue`
 - **Deadline Monitoring**: An automatic background process continuously tracks task deadlines, shifting incomplete tasks into the `overdue` status when their timeline expires
 
 ### Authorization & Permissions
@@ -23,8 +23,9 @@ cp .env.example .env
 docker compose up --build
 ```
 
-This starts Postgres, waits for its healthcheck, and then triggers a dedicated migrations container (`task_management_migrations`) to apply any outstanding schema scripts. The main Go application container (`task_management`) automatically waits for the migrations to complete successfully before booting up.
-The API is then available at `http://localhost:8080`.
+This starts Postgres, waits for its healthcheck, and then triggers a dedicated migrations container (`task_management_migrations`) to apply any outstanding schema scripts. The main Go application container (`task_management`) automatically waits for the migrations to complete successfully before booting up
+
+The API is then available at `http://localhost:8080`
 
 ### Locally
 
@@ -48,12 +49,12 @@ All settings are loaded from environment variables (`internal/config`):
 | `TOKEN_TTL` | no | `15m` | JWT validity period |
 | `DEADLINE_WORKER_INTERVAL` | no | `10m` | How often the overdue-task sweeper runs |
 
-See `.env.example` for a ready-to-copy template.
+See `.env.example` for a ready-to-copy template
 
 ## API
 
 Authenticated routes require:
-`Authorization: Bearer <token>`.
+`Authorization: Bearer <token>`
 
 ### Auth
 
