@@ -1,10 +1,14 @@
 package main
 
 import (
+	"context"
 	"log/slog"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"task-management/internal/config"
+	"task-management/internal/repository/postgres"
 )
 
 func main() {
@@ -16,5 +20,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	_ = cfg
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	db, err := postgres.Open(ctx, cfg.Database)
+	if err != nil {
+		slog.Error("failed to connect to database", "error", err)
+		os.Exit(1)
+	}
+	defer db.Close()
 }
