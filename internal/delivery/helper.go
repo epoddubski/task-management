@@ -3,6 +3,7 @@ package delivery
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -47,4 +48,19 @@ func writeJSON(w http.ResponseWriter, status int, body any) {
 func writeError(w http.ResponseWriter, err error) {
 	status := mapErrorToStatus(err)
 	writeJSON(w, status, errorResponse{Error: err.Error()})
+}
+
+func mapErrorToStatus(err error) int {
+	switch {
+	case errors.Is(err, ErrUnauthorized):
+		return http.StatusUnauthorized
+
+	case errors.Is(err, ErrRequestBody),
+		errors.Is(err, ErrQueryParameter),
+		errors.Is(err, ErrPathParameter):
+		return http.StatusBadRequest
+
+	default:
+		return http.StatusInternalServerError
+	}
 }
