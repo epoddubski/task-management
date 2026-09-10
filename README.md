@@ -73,3 +73,6 @@ Authenticated routes require:
 | PATCH | `/api/tasks/{id}` | required | Partial update — **creator only** |
 | DELETE | `/api/tasks/{id}` | required | Delete — **creator only** |
 
+## Testing
+
+You can import the `swagger.json` file directly into **Postman** or **Swagger UI** for testing
