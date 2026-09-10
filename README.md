@@ -13,7 +13,6 @@ REST API for managing tasks with user authentication.
 ### Authorization & Permissions
 - **Visibility**: Any authenticated user has the permission to work with tasks (create, view specific tasks, or list all tasks with filters)
 - **Resource Guarding**: Only the **creator** of a task has the authority to update its fields or permanently delete it
-- **Access Restraints**: Any modification or deletion attempt by a non-creator is strictly blocked
 
 ## Running it
 
