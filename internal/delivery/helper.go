@@ -1,11 +1,30 @@
 package delivery
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log/slog"
 	"net/http"
+	"strconv"
 )
+
+func parseIDParam(r *http.Request) (int64, error) {
+	idStr := r.PathValue("id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		return 0, fmt.Errorf("%w: invalid id %q", ErrPathParameter, idStr)
+	}
+	return id, nil
+}
+
+func userIDFromContext(ctx context.Context) (int64, error) {
+	id, ok := ctx.Value(userIDContextKey{}).(int64)
+	if !ok {
+		return 0, ErrUnauthorized
+	}
+	return id, nil
+}
 
 func decodeJSON(r *http.Request, req any) error {
 	if err := json.NewDecoder(r.Body).Decode(req); err != nil {

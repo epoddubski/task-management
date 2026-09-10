@@ -1,10 +1,23 @@
 package delivery
 
 import (
+	"errors"
 	"time"
 
 	"task-management/internal/domain"
 )
+
+var (
+	ErrRequestBody    = errors.New("invalid request body")
+	ErrQueryParameter = errors.New("invalid query parameter")
+	ErrPathParameter  = errors.New("invalid path parameter")
+
+	ErrUnauthorized = errors.New("invalid authorization token")
+)
+
+type errorResponse struct {
+	Error string `json:"error"`
+}
 
 type registerRequest struct {
 	Email    string `json:"email"`
