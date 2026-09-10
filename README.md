@@ -11,7 +11,7 @@ REST API for managing tasks with user authentication
 - **Deadline Monitoring**: An automatic background process continuously tracks task deadlines, shifting incomplete tasks into the `overdue` status when their timeline expires
 
 ### Authorization & Permissions
-- **Visibility**: Any authenticated user has the permission to work with tasks (create, view specific tasks, or list all tasks with filters)
+- **Visibility**: Any authenticated user has the permission to work with tasks (create, view specific tasks, list all tasks with filters, udpate, or delete)
 - **Resource Guarding**: Only the **creator** of a task has the authority to update its fields or permanently delete it
 
 ## Running it
