@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"task-management/internal/domain"
 )
@@ -182,4 +183,19 @@ func (r *TaskRepository) Delete(ctx context.Context, id int64) error {
 		return domain.ErrTaskNotFound
 	}
 	return nil
+}
+
+func (r *TaskRepository) MarkOverdue(ctx context.Context, now time.Time) (int64, error) {
+	const q = `
+		UPDATE tasks
+		SET status = 'overdue', updated_at = now()
+		WHERE deadline IS NOT NULL
+		  AND deadline < $1
+		  AND status NOT IN ($2, $3)`
+
+	res, err := r.db.ExecContext(ctx, q, now, domain.StatusCompleted, domain.StatusOverdue)
+	if err != nil {
+		return 0, fmt.Errorf("mark overdue: %w", err)
+	}
+	return res.RowsAffected()
 }
